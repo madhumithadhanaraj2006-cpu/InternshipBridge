@@ -261,83 +261,6 @@ def apply():
 
     return render_template("apply.html")
 
-    # -----------------------------------------------------
-    # VALIDATION
-    # -----------------------------------------------------
-
-    if not name:
-
-        flash("Please enter your name.")
-
-        return render_template("apply.html")
-
-
-    if not email:
-
-        flash("Please enter your email.")
-
-        return render_template("apply.html")
-
-
-    if not college:
-
-        flash("Please enter your college.")
-
-        return render_template("apply.html")
-
-
-    if not department:
-
-        flash("Please enter your department.")
-
-        return render_template("apply.html")
-
-
-    if not year:
-
-        flash("Please select your year.")
-
-        return render_template("apply.html")
-
-
-    # -----------------------------------------------------
-    # INSERT APPLICATION
-    # -----------------------------------------------------
-
-    conn = get_db_connection()
-
-    conn.execute("""
-        INSERT INTO applications
-        (
-            name,
-            email,
-            college,
-            department,
-            year,
-            internship,
-            reason,
-            status
-        )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    """, (
-        name,
-        email,
-        college,
-        department,
-        year,
-        internship,
-        reason,
-        "Pending"
-    ))
-
-    conn.commit()
-
-    conn.close()
-
-
-    flash("Application submitted successfully!")
-
-    return redirect(url_for("my_applications"))
 
 # =========================================================
 # MY APPLICATIONS
@@ -467,14 +390,19 @@ def test():
 
 
 # =========================================================
-# RUN APPLICATION
+# INITIALIZE DATABASE ON IMPORT
+# (needed so gunicorn/Render creates the table too, not
+# just when running "python app.py" directly)
+# =========================================================
+
+init_database()
+
+
+# =========================================================
+# RUN APPLICATION (local development only)
 # =========================================================
 
 if __name__ == "__main__":
-
-    # Create / update database
-    init_database()
-
 
     print("----------------------------------------")
     print(" InternshipBridge")
@@ -493,9 +421,9 @@ if __name__ == "__main__":
     print(" http://127.0.0.1:5000/admin")
     print("----------------------------------------")
 
-
+    port = int(os.environ.get("PORT", 5000))
     app.run(
-        host="127.0.0.1",
-        port=5000,
-        debug=True
+        host="0.0.0.0",
+        port=port,
+        debug=False
     )
