@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard | InternshipBridge</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #123b63;
+        }
+
+        header {
+            background: white;
+            padding: 22px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px #ddd;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .green {
+            color: #19a879;
+        }
+
+        .btn {
+            padding: 10px 18px;
+            border: 1px solid #123b63;
+            border-radius: 6px;
+            background: white;
+            color: #123b63;
+            text-decoration: none;
+        }
+
+        main {
+            width: 88%;
+            margin: 40px auto;
+        }
+
+        h1 {
+            font-size: 34px;
+        }
+
+        .subtitle {
+            color: #58708a;
+        }
+
+        .table-box {
+            background: white;
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 3px 15px #ddd;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #123b63;
+            color: white;
+            padding: 14px;
+            text-align: left;
+        }
+
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 40px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        Internship<span class="green">Bridge</span>
+    </div>
+
+    <a href="/student-dashboard" class="btn">
+        Dashboard
+    </a>
+
+</header>
+
+<main>
+
+    <h1>Admin Dashboard</h1>
+
+    <p class="subtitle">
+        Review and manage student internship applications.
+    </p>
+
+    {% if applications %}
+
+    <div class="table-box">
+
+        <table>
+
+            <tr>
+                <th>ID</th>
+                <th>Student</th>
+                <th>Email</th>
+                <th>College</th>
+                <th>Department</th>
+                <th>Year</th>
+                <th>Status</th>
+            </tr>
+
+            {% for application in applications %}
+
+            <tr>
+
+                <td>{{ application[0] }}</td>
+
+                <td>
+                    <strong>{{ application[1] }}</strong>
+                </td>
+
+                <td>{{ application[2] }}</td>
+
+                <td>{{ application[3] }}</td>
+
+                <td>{{ application[4] }}</td>
+
+                <td>{{ application[5] }}</td>
+
+                <td>
+                    <span class="status">
+                        {{ application[7] }}
+                    </span>
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+    </div>
+
+    {% else %}
+
+    <div class="table-box empty">
+
+        <h2>No Applications</h2>
+
+        <p>No student applications have been submitted yet.</p>
+
+    </div>
+
+    {% endif %}
+
+</main>
+
+</body>
+</html>
